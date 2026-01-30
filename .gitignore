@@ -1,0 +1,4 @@
+# Ignore entire SafePred project (placeholder repo)
+*
+!.gitignore
+!README.md
