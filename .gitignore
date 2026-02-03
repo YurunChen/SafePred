@@ -1,4 +1,20 @@
-# Ignore entire SafePred project (placeholder repo)
-*
-!.gitignore
-!README.md
+# Environment variables
+.env
+.history
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+# Logs, data, etc.
+# Ignore the contents of these directories, but not the directories themselves
+/logs/*
+/trajectories/*
+/data/*
+/checkpoints/*
+/predictions/*
+/runs/*
+/document
+
+# Don't ignore .gitkeep files, so we can keep empty directories
+!**/.gitkeep

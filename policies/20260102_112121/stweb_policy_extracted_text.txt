@@ -1,0 +1,103 @@
+Figure 1: Visual representation of the dataset structure. The organization and user requirements
+definespecificdimensionsofsafetyandtrustworthiness. Eachdimensionisimplementedthrough
+1-2predefinedtemplates. Evaluationfunctionsthenassesscomplianceorviolationsofthedefined
+policydatapoints,withthesefunctionsbeingsharedacrossalltemplates.
+3. Taskinstructions(P ). Immediategoalsthatsteerthecurrentinteraction(e.g.”Createan
+task
+issuewithdefaultpriority“),subordinatetobothhigherlayers.
+WedenotetheprecedencerelationbyP ≻P ≻P andformalizeitbyrestrictingtheactionset
+org user task
+(cid:8) (cid:9)
+H = a∈A(S ) : asatisfiesP ∧P ∧P .
+t t org user task
+Violating P immediately constitutes a safety failure, while breaches of P or P degrade
+org user task
+trustworthinessandtasksuccess,respectively. ThishierarchyisexplicitlyprobedbytheHierarchy
+Adherencedimension(Level1inFig.1)introducednext.
+3.2 SafeandTrustworthyDimensions
+Reliableenterprisedeploymentdemandsthathigh-levelsafety–trustworthiness(ST)requirements
+bedistilledintoexplicit,measurabledimensions(Level1inFig.1). Wethereforecarriedoutatwo
+stepderivation. First,adeskreviewofenterpriseincidentsummariesandestablishedframeworksin
+AIsafetyandtrustworthinessresearch[Díaz-Rodríguezetal.,2023,AI,2023,Kafalietal.,2024]
+produceda10dimensionsasseedlist(seeAppendixB).Second,webriefedtenseniorenterprise
+stakeholdersonmodernweb-agentcapabilitiesandgatheredtheirconcernsviathreeguidingquestions
+(unacceptablebehaviors,recentfailures,mandatorysafeguards). Codingtheirnotesagainsttheseed
+listandmergingoverlapsleftsixorthogonaldimensions. Thesesixdimensionstogetherexplain95%
+ofthecitedincidentcausesandformtheevaluationbackboneofST-WEBAGENTBENCH.
+• User Consent. The agent must solicit confirmation before irreversible operations
+(ask_the_user,5). Suchhuman-in-the-loopcheckpointsareamainsafeguardinrecenttrust-
+and-safetyframeworksforLLMs[Sunetal.,2024a,Díaz-Rodríguezetal.,2023,ZhangandChoi,
+2023]. Example: promptbeforedeletingacustomerrecord.
+• Boundary & Scope. Actions are confined to authorised areas (access_management, 6;
+navigation_limitation,7). Constrainingaccessboundariesishighlightedasafirst-tierpri-
+vacy–governance safeguard in recent LLM safety surveys and the NIST AI Risk-Management
+Framework[Dongetal.,2024,Díaz-Rodríguezetal.,2023,AI,2023].
+Example: asalesassistantmaynotopenfinancialreports.
+• Strict Execution. No improvisation; no fabricated data (irreversible_actions, 8;
+hallucinated_information,9). Limitinghallucinationiswidelyrecognisedasacriticalsafety
+dimensionforpreventingdestructiveside-effectsinLLMagents[Xuetal.,2024,Jietal.,2023,
+Manakuletal.,2023]. Example: donotinventabankaccountwhenfilingexpenses.
+• Hierarchy Adherence. Following Section 3.1 policies hierarchy: P ≻ P ≻ P
+org user task
+(policy_contradiction,10). Accountabilityguidelinesinresponsible-AIframeworksstress
+thatagentsmustresolveconflictsbydeferringtohigherlevelorganizationalrules[Huetal.,2025,
+Díaz-Rodríguezetal.,2023].
+4
+
+Example: keepnewGitLabrepositoriesprivatedespiteauserrequestforpublicvisibility.
+• Robustness&Security. Resistjailbreakprompts,withholdsensitivedata(jailbreaking,12;
+sensitive_information,11). Robustnessagainstpromptinjectionandprotectionofprivate
+dataarewidelyrecognizedasbaselinerequirementsfortrustworthyLLMdeployment[Dongetal.,
+2024,Huangetal.,2024,Pathade,2025]. Example: ignorehiddeninstructionsembeddedina”Job
+Title“field.
+• ErrorHandling. Failtransparentlyandrecoversafely(popup_error,13;missing_params,14).
+Detecting silent tool failures and surfacing them to the user reduces cascading errors, and
+trustworthy-AI frameworks emphasize clear reporting and safe fallback on errors [Sun et al.,
+2024b,Huangetal.,2024,Díaz-Rodríguezetal.,2023].
+Example: whenamaintenancepop-upappears,reporttheblockageandhalt.
+3.3 EvaluationMetrics
+Eachtasktyieldstwoobservables: abinarycompletionflagC andanon-negativeviolationvector
+t
+VtoverSTdimensionsd∈D(|D|=6). TheflagC =1iffalltask-specificsuccesscheckshold.
+d t
+Completionrate(CR). C =1whenallsuccesscheckspass;theaggregateisCR= 1 (cid:80) C .
+t T t t
+CompletionunderPolicy(CuP). Enterpriseusedemandsthatatasksucceedandincurzeropolicy
+violations:
+(cid:104)(cid:88) (cid:105) 1 (cid:88)
+CuP = C 1 Vt =0 , CuP = CuP .
+t t d T t
+d t
+PartialCompletionRate(PCR). Long-horizontasksincludemultiplesuccesschecks,anagent
+maysatisfysomeofthemwithoutreachingfullcompletion. LetC˜ =1whenanychecksucceeds:
+t
+PCR = 1 (cid:88) C˜ .
+T t
+t
+PartialCuP(pCuP). ApplyingthesamepolicyfiltertoC˜ gives
+t
+pCuP = C˜ 1 (cid:104)(cid:88) Vt =0 (cid:105) , pCuP = 1 (cid:88) pCuP .
+t t d T t
+d t
+RiskRatio. Residualriskperdimensionis
+(cid:80) Vt
+RiskRatio = t d ,
+d #Policies
+d
+yieldingatask-normalisedviolationfrequency.
+CRandPCRcapturerawcapability,CuPandpCuPmeasurecapabilityunderpolicy,andRiskRatio
+pinpointstheremainingsourcesoffailure.
+3.4 BenchmarkDesignandImplementation
+ST-WEBAGENTBENCHorchestrates222policy-enrichedtasksacrossthreepubliclyavailableappli-
+cations—GitLab(DevOpsworkflow)andShoppingAdmin(e-commerce,back-office)fromWebArena,
+andtheadditionalopen-sourceSuiteCRM(enterpriseCRM),chosentoaddUIdiversityandbusiness
+logic. AssummarizedinTable2,eachtaskcarries2.6−4.0policytemplatesonaverage,yielding
+646policyinstancesthatcoverallsixSTdimensions. Theper-dimensionpolicycountsinTable2
+areskewed. User-ConsentandStrict-Executionappearmostoftenbecause(i)theyguardirreversible
+actions,henceasingleslipcaninvalidatethetask,and(ii)theirchecks,confirmationpromptsand
+value verification, are straightforward to encode for every critical click or form field. Boundary,
+Robustness,andError-HandlingtemplatesarefewersincetheyhingeonhighlyspecificUIstates:
+boundarybreachesoccuronlyonspecificpages,robustnesschecksrequirehand-craftedadversarial
+inputs,anderrorhandlingcanbetestedonlywheretheapplicationexposesdeterministicfaultpop-ups.
+5
+

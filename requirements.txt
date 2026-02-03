@@ -1,0 +1,28 @@
+# =============================================================================
+# SafePred core dependencies (required for wrapper, agent, config, LLM client)
+# =============================================================================
+numpy>=1.20.0          # adapters (visualwebarena), trajectory_storage serialization
+pyyaml>=6.0            # config loading (config.yaml)
+requests>=2.28.0       # LLMClient HTTP calls (OpenAI-compatible / Qwen / custom)
+python-dotenv>=1.0.0   # load .env from project root (config)
+
+# =============================================================================
+# Document parsing (.docx / .html / .pdf policy documents)
+# =============================================================================
+python-docx>=0.8.11    # DocumentParser.parse_docx (Word)
+beautifulsoup4>=4.11.0 # DocumentParser.parse_html (optional: has regex fallback)
+PyPDF2>=3.0.0         # DocumentParser.parse_pdf (PDF; or use pdfplumber / PyMuPDF)
+
+# =============================================================================
+# LLM: three providers only (openai SDK, gemini SDK, custom=requests)
+# =============================================================================
+openai>=1.0.0                  # provider=openai
+google-generativeai>=0.3.0     # provider=gemini
+# requests already in core deps above; used for provider=custom
+
+# =============================================================================
+# Optional: development
+# =============================================================================
+# pytest>=7.0.0
+# black>=22.0.0
+# flake8>=4.0.0

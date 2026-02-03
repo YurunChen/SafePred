@@ -1,0 +1,80 @@
+# Safety-TS-LMA Configuration
+# API keys and URLs are read only from .env (by provider: OPENAI_*, GEMINI_*, CUSTOM_*). Not set in this file.
+
+logging:
+  level: "DEBUG"
+
+world_model_llm:
+  provider: "custom"
+  model_name: "gpt-4o-mini"
+  temperature: 0.3
+  max_tokens: 4000
+  timeout: 120
+  max_retries: 10
+  retry_delay: 3.0
+  retry_backoff: 1.5
+  use_state_delta: true
+  prediction_steps: 1
+  log_prompt: True
+  show_policy_references: False
+  reference_limits:
+    high: 10
+    medium: 7
+    low: 5
+  similarity_threshold: 0.85
+
+experience_replay:
+  enable: false
+  max_examples: 10
+  filter_successful: true
+  max_risk: 0.7
+
+trajectory_storage:
+  enable: true
+  max_entries_in_memory: 50
+  auto_save: true
+
+rule_extractor_llm:
+  provider: "openai"
+  model_name: "gpt-4o"
+  temperature: 0.3
+  max_tokens: 2000
+  timeout: 60
+
+action_agent_llm:
+  provider: "openai"
+  model_name: "o4-mini"
+  temperature: 0.7
+  max_tokens: 3000
+  timeout: 30
+
+conversation_history:
+  max_length: 3
+  show_full_response: True
+
+# Planning: controls benchmark/wasp Agent when --use_safepred (via --safepred_config_path).
+# WASP agent reads: wrapper.use_planning (= planning.enable), wrapper.enable_risk_guidance (= risk_guidance_enable).
+# enable_short_term_prediction / enable_long_term_prediction: used by SafePred world model only.
+planning:
+  enable: True
+  risk_guidance_enable: True
+  enable_short_term_prediction: True
+  enable_long_term_prediction: False
+
+# Action sampling
+action_sampling:
+  num_samples: 1
+  use_diverse_sampling: false
+
+# Risk score calculation
+risk_score_config:
+  violation_penalty: 0.8
+
+# Tree search planning
+tree_search:
+  n_root: 1
+  n_child: 1
+  m_child: 1
+  max_depth: 1
+  root_risk_threshold: 0.7
+  child_risk_threshold: 0.7
