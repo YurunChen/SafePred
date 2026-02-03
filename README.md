@@ -5,6 +5,7 @@
 # SafePred
 
 **Predictive Guardrails for Computer-using Agents**
+
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-red.svg)](https://arxiv.org/abs/2602.01725)
 
 </div>
