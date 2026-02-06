@@ -471,16 +471,19 @@ class SafePredWrapper:
                     # This represents the observation after executing the simulated path
                     prompt.append({"role": "user", "content": predicted_state_message})
                     
-                    # Log full prompt for action agent as a single string
+                    # Log full prompt only when enabled (avoid privacy leak in logs)
                     prompt_str = "\n".join([
                         f"Message {i+1} ({msg.get('role', 'unknown')}):\n{msg.get('content', '')}"
                         for i, msg in enumerate(prompt)
                     ])
-                    logger.info("=" * 80)
-                    logger.info(f"[Wrapper] [Action Agent] Full Prompt:")
-                    logger.info("=" * 80)
-                    logger.info(prompt_str)
-                    logger.info("=" * 80)
+                    if getattr(self.config, "action_agent_log_prompt", False):
+                        logger.info("=" * 80)
+                        logger.info(f"[Wrapper] [Action Agent] Full Prompt:")
+                        logger.info("=" * 80)
+                        logger.info(prompt_str)
+                        logger.info("=" * 80)
+                    else:
+                        logger.info(f"[Wrapper] [Action Agent] Prompt length: {len(prompt_str)} chars, preview: {prompt_str[:200]}...")
                     
                     # For chat format prompt, use generate with messages parameter
                     # LLMClient.generate() now supports messages-only calls (prompt is optional)
@@ -502,12 +505,15 @@ class SafePredWrapper:
                         risk_guidance=risk_guidance if risk_guidance else ""
                     )
                     
-                    # Log full prompt for action agent
-                    logger.info("=" * 80)
-                    logger.info(f"[Wrapper] [Action Agent] Full Prompt:")
-                    logger.info("=" * 80)
-                    logger.info(prompt)
-                    logger.info("=" * 80)
+                    # Log full prompt only when enabled (avoid privacy leak in logs)
+                    if getattr(self.config, "action_agent_log_prompt", False):
+                        logger.info("=" * 80)
+                        logger.info(f"[Wrapper] [Action Agent] Full Prompt:")
+                        logger.info("=" * 80)
+                        logger.info(prompt)
+                        logger.info("=" * 80)
+                    else:
+                        logger.info(f"[Wrapper] [Action Agent] Prompt length: {len(prompt)} chars, preview: {prompt[:200]}...")
                     
                     response = llm_client.generate(
                         prompt=prompt,
@@ -951,14 +957,11 @@ Actions:"""
             import traceback
             logger.error(f"Error converting state to SafePred format: {e}")
             logger.error(f"Traceback: {traceback.format_exc()}")
-            logger.error(f"State type: {type(state)}, State value (first 500 chars): {str(state)[:500]}")
+            # Log type/size only to avoid privacy leak (state/observation may contain user content)
+            logger.error(f"State type: {type(state).__name__}, len: {len(state) if isinstance(state, (list, dict)) else 'N/A'}")
             if isinstance(state, list) and len(state) > 0:
-                logger.error(f"First element type: {type(state[0])}, First element: {str(state[0])[:200]}")
-                if isinstance(state[0], dict):
-                    logger.error(f"First element keys: {list(state[0].keys())}")
-                    if "observation" in state[0]:
-                        logger.error(f"Observation type: {type(state[0]['observation'])}, Observation value (first 200 chars): {str(state[0]['observation'])[:200]}")
-            logger.error(f"Metadata type: {type(metadata)}, Metadata value: {metadata}")
+                logger.error(f"First element type: {type(state[0]).__name__}, keys: {list(state[0].keys()) if isinstance(state[0], dict) else 'N/A'}")
+            logger.error(f"Metadata type: {type(metadata).__name__}, keys: {list(metadata.keys()) if isinstance(metadata, dict) else 'N/A'}")
             raise
         
         # Convert actions to SafePred format
@@ -1019,9 +1022,8 @@ Actions:"""
         
         # Ensure result is a dict - raise error if not
         if not isinstance(result, dict):
-            error_msg = f"[Wrapper] get_safe_action returned non-dict: type={type(result)}, value={str(result)[:200]}"
+            error_msg = f"[Wrapper] get_safe_action returned non-dict: type={type(result).__name__}, value preview: {str(result)[:150]}..."
             logger.error(error_msg)
-            logger.error(f"[Wrapper] Full result value: {result}")
             raise TypeError(error_msg)
         
         # Extract required fields - raise error if missing

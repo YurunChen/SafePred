@@ -111,6 +111,7 @@ class SafetyConfig:
     action_agent_llm_temperature: Optional[float] = None
     action_agent_llm_max_tokens: Optional[int] = None
     action_agent_llm_timeout: Optional[int] = None
+    action_agent_log_prompt: bool = False  # Whether to log full action-agent prompts (default False to avoid privacy leak in logs)
     
     # Logging configuration
     log_level: str = "INFO"  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL (default: INFO)
@@ -297,6 +298,7 @@ class SafetyConfig:
             "action_agent_llm_temperature": action_agent_llm_config.get("temperature"),
             "action_agent_llm_max_tokens": action_agent_llm_config.get("max_tokens"),
             "action_agent_llm_timeout": action_agent_llm_config.get("timeout"),
+            "action_agent_log_prompt": action_agent_llm_config.get("log_prompt", False),
             # Planning configuration
             "planning_enable": yaml_config.get("planning", {}).get("enable", False),
             "risk_guidance_enable": yaml_config.get("planning", {}).get("risk_guidance_enable", True),  # Default: True

@@ -4,7 +4,7 @@
 
 # SafePred
 
-**Predictive Guardrails for Computer-using Agents**
+**A Predictive Guardrail for Computer-Using Agents**
 
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-red.svg)](https://arxiv.org/abs/2602.01725)
 
@@ -14,7 +14,7 @@
 
 <div align="justify">
 
-With the widespread deployment of **Computer-using Agents (CUAs)** in complex real-world environments, long-term risks often lead to severe and irreversible consequences. Most existing guardrails adopt a *reactive* approach—constraining behavior only within the current observation space. They can prevent immediate risks (e.g., clicking a phishing link) but cannot avoid *long-term* risks: seemingly reasonable actions can yield high-risk outcomes that appear only later (e.g., cleaning logs makes future audits untraceable), which reactive guardrails cannot see in the current observation.
+With the widespread deployment of **Computer-Using Agents (CUAs)** in complex real-world environments, long-term risks often lead to severe and irreversible consequences. Most existing guardrails adopt a *reactive* approach—constraining behavior only within the current observation space. They can prevent immediate risks (e.g., clicking a phishing link) but cannot avoid *long-term* risks: seemingly reasonable actions can yield high-risk outcomes that appear only later (e.g., cleaning logs makes future audits untraceable), which reactive guardrails cannot see in the current observation.
 
 We propose a **predictive guardrail** approach: align predicted future risks with current decisions. **SafePred** implements this via:
 
@@ -222,12 +222,5 @@ class MyBenchmarkAdapter(BaseAdapter):
 
 For any questions or issues, please contact via [email](mailto:yurunchen.research@gmail.com).
 
----
-
-<div align="center">
-
-**⭐ If you find SafePred useful, please consider giving us a star on GitHub!**
-
-</div>
 
 

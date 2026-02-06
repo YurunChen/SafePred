@@ -15,6 +15,7 @@ __pycache__/
 /predictions/*
 /runs/*
 /document
+/policies/*
 
 # Don't ignore .gitkeep files, so we can keep empty directories
 !**/.gitkeep
