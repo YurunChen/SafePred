@@ -67,9 +67,11 @@ Edit `config/config.yaml` to set up your providers and models:
 
 ### 4. Benchmark Environments
 
-The project uses two benchmarks, WASP and OS-Harm, which require separate environments.
+The project uses two benchmarks, WASP and OS-Harm, which require separate environments. **Each benchmark also requires a VM or cloud instance (e.g. AWS EC2)** and specific services; for VM/EC2 setup and configuration, see each benchmark’s documentation below.
 
 #### WASP Environment
+
+For **VM/EC2 and web services (Reddit, GitLab)** setup, see [benchmark/wasp/README.md](benchmark/wasp/README.md) and [benchmark/wasp/visualwebarena/environment_docker/README.md](benchmark/wasp/visualwebarena/environment_docker/README.md).
 
 **Create and activate a conda environment for WASP:**
 
@@ -85,6 +87,8 @@ pip install -r benchmark/wasp/webarena_prompt_injections/requirements.txt
 ```
 
 #### OS-Harm Environment
+
+For **VM setup** (e.g. VMware Workstation, Ubuntu VM), see [benchmark/os-harm/README.md](benchmark/os-harm/README.md) and [OSWorld installation](https://github.com/xlang-ai/OSWorld/#-installation).
 
 **Create and activate a conda environment for OS-Harm:**
 
