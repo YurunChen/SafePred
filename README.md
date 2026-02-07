@@ -101,6 +101,12 @@ pip install -r benchmark/os-harm/baseline/code/requirements.txt
 
 ---
 
+## 📜 Extracting Policies
+
+SafePred uses safety policies to evaluate action risk. To extract policies from your own documents, see **[Extracting Policies](docs/POLICY_EXTRACTION.md)**.
+
+---
+
 ## 🧪 Running Experiments
 
 This section provides example commands for running the WASP and OS-Harm benchmarks with SafePred integration.

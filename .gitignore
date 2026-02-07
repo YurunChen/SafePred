@@ -15,7 +15,6 @@ __pycache__/
 /predictions/*
 /runs/*
 /document
-/policies/*
 
 # Benchmark virtualenvs (do not commit)
 benchmark/**/venv/
