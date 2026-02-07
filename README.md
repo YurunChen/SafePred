@@ -200,7 +200,7 @@ To integrate SafePred with a new benchmark:
 3. **Use the wrapper**: Initialize SafePredWrapper with your benchmark name and appropriate config/policy paths.
 
 <details>
-<summary><b>💡 Example Adapter Structure</b></summary>
+<summary><b> Example Adapter Structure</b></summary>
 
 ```python
 # adapters/my_benchmark.py
@@ -222,5 +222,15 @@ class MyBenchmarkAdapter(BaseAdapter):
 
 For any questions or issues, please contact via [email](mailto:yurunchen.research@gmail.com).
 
+---
+## 📄 Citation
 
+```bibtex
+@article{chen2026safepred,
+  title={SafePred: A Predictive Guardrail for Computer-Using Agents via World Models},
+  author={Chen, Yurun and Liao, Zeyi and Yin, Ping and Xie, Taotao and Yin, Keting and Zhang, Shengyu},
+  journal={arXiv preprint arXiv:2602.01725},
+  year={2026}
+}
+```
 
