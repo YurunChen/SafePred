@@ -1,0 +1,177 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "WASP",
+  "description": "Autonomous web navigation agents hold great potential for unlocking human productivity by automating mundane tasks on the internet. However, these agents can also be taken advantage of as new attack vectors for adversaries when deployed without proper mitigation. One emerging threat \u2014 prompt injection attacks, where the adversary embeds malicious instructions in the web environment that divert the agent to instead perform tasks for the adversary. To measure the extent of this risk, we construct this new benchmark that simulates real world attacks in a highly realistic, end-to-end executable web environment, without exposing the agent to real harm.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "citeAs": "@misc{evtimov2025waspbenchmarkingwebagent,title={WASP: Benchmarking Web Agent Security Against Prompt Injection Attacks},author={Ivan Evtimov and Arman Zharmagambetov and Aaron Grattafiori and Chuan Guo and Kamalika Chaudhuri},year={2025},eprint={2504.18575},archivePrefix={arXiv},primaryClass={cs.CR},url={https://arxiv.org/abs/2504.18575},}",
+  "url": "https://github.com/facebookresearch/wasp",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "github-repository",
+      "name": "github-repository",
+      "description": "WASP repository on GitHub.",
+      "contentUrl": "https://github.com/facebookresearch/wasp",
+      "encodingFormat": "git+https",
+      "sha256": "main"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "jsonl-files",
+      "name": "jsonl-files",
+      "description": "JSONL files are hosted on the GitHub repository.",
+      "containedIn": {
+        "@id": "github-repository"
+      },
+      "encodingFormat": "application/jsonlines",
+      "includes": "webarena_prompt_injections/configs/croissant/*.jsonl"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "jsonl",
+      "name": "jsonl",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "jsonl/task",
+          "name": "task",
+          "description": "Type of task: prompt injection or utility.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl-files"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            },
+            "transform": {
+              "regex": "^(.*)\\.jsonl$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "jsonl/free_form_name",
+          "name": "free_form_name",
+          "description": "short description of the task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl-files"
+            },
+            "extract": {
+              "column": "free_form_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "jsonl/action_url",
+          "name": "action_url",
+          "description": "initial URL, keywords inside {} will be coming from parameters field.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl-files"
+            },
+            "extract": {
+              "column": "action_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "jsonl/instruction",
+          "name": "instruction",
+          "description": "user instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl-files"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "jsonl/parameters_str",
+          "name": "parameters_str",
+          "description": "parameters that are used to populate all other fields, it needs to be converted to dict type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl-files"
+            },
+            "extract": {
+              "column": "parameters_str"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "jsonl/eval_str",
+          "name": "eval_str",
+          "description": "eval -- evaluation workflow, needs to be converted into valid json dict.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "jsonl-files"
+            },
+            "extract": {
+              "column": "eval_str"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
