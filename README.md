@@ -6,7 +6,7 @@
 
 **A Predictive Guardrail for Computer-Using Agents**
 
-[![arXiv](https://img.shields.io/badge/arXiv-Paper-red.svg)](https://arxiv.org/abs/2602.01725)
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-red.svg)](https://arxiv.org/abs/2602.01725) [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Paper-yellow.svg)](https://huggingface.co/papers/2602.01725) [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Model-blue.svg)](https://huggingface.co/yurun-chen/SafePred-8B) [![X](https://img.shields.io/badge/X-Post-black.svg)](https://x.com/YRChen_AIsafety/status/2018944370804965432)
 
 </div>
 
